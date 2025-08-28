@@ -10,8 +10,10 @@
             <tr>
                 <th>Id</th>
                 <th>Title</th>
-                <th>Writer</th>
+                <th>First name</th>
+                <th>Last name</th>
                 <th>YearPublication</th>
+                <th>Image</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,6 +25,7 @@
                 <td>{{ book.writer.firstName }}</td>
                 <td>{{ book.writer.lastName }}</td>
                 <td>{{ book.publicationYear }}</td>
+                <td>{{ book.image }}</td>
                 <td>
                     <a href="{{ path('app_book_show', {'id': book.id}) }}">show</a>
                     <a href="{{ path('app_book_edit', {'id': book.id}) }}">edit</a>

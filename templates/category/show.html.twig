@@ -11,6 +11,16 @@
                 <th>Id</th>
                 <td>{{ category.id }}</td>
             </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ category.name }}</td>
+            </tr>
+            <tr>
+                <th>Books</th>  
+                {% for book in category.books %}
+                <td>{{ book.title }}</td>
+                {% endfor %}
+            </tr>
         </tbody>
     </table>
 

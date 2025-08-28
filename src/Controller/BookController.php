@@ -6,10 +6,12 @@ use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 #[Route('/book')]
 final class BookController extends AbstractController
@@ -23,13 +25,33 @@ final class BookController extends AbstractController
     }
 
     #[Route('/new', name: 'app_book_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $image = $form->get('image')->getData(); // récupère l'image et son contenu
+
+            // si image envoyée
+            if($image){
+                $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME); // on récupère nom d'origine sans les extensions
+                $safeImageName = $slugger->slug($originalName); // on sluggifie nom original (on remplace les espaces et les caract spé par -)
+                $newFileImageName = $safeImageName.'-'.uniqid().'-'.$image->guessExtension(); // on rajoute un id unique et l'extension
+
+                try { // ça déplace les images ds le image_directory du service.yaml
+                    $image->move
+                    ($this->getParameter('image_directory'),
+                    $newFileImageName);
+                } catch (FileException $exception) {
+                    // on met le mess erreur si besoin
+                }
+                    $book->setImage($newFileImageName); // on sauvegarde le nom du fichier ds son entité
+            }
+
             $entityManager->persist($book);
             $entityManager->flush();
 

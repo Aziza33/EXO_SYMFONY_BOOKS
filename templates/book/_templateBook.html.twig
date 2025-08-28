@@ -16,6 +16,7 @@
           <th>Title</th>
           <th>Writer</th>
           <th>Publication Year</th>
+          <th>Image</th>
           <th style="width: 140px;">Actions</th>
         </tr>
       </thead>
@@ -26,6 +27,7 @@
             <td>{{ book.title|default('—') }}</td>
             <td>{{ book.writer }}</td>
             <td>{{ book.publicationYear }}</td>
+            <td>{{ book.image }}</td>
             <td>
               <a class="btn btn-sm btn-outline-secondary" href="{{ path('app_book_show', { id: book.id }) }}">show</a>
               <a class="btn btn-sm btn-outline-primary ms-1" href="{{ path('app_book_edit', { id: book.id }) }}">edit</a>
