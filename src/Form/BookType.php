@@ -19,11 +19,11 @@ class BookType extends AbstractType
             ->add('publicationYear')
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
             ->add('writer', EntityType::class, [
                 'class' => author::class,
-                'choice_label' => 'id',
+                'choice_label' => 'lastName',
             ])
         ;
     }

@@ -15,6 +15,17 @@
                 <th>FirstName</th>
                 <td>{{ author.firstName }}</td>
             </tr>
+             <tr>
+                <th>Last name</th>
+                <td>{{ author.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Books</th>
+                {% for book in author.books %}
+                   <td>{{ book.title}}</td>
+                {% endfor %}
+            </tr>
+
         </tbody>
     </table>
 
